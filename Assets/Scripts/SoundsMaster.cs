@@ -3,17 +3,16 @@ using UnityEngine.Audio;
 
 public class SoundsMaster : MonoBehaviour
 {
-    private readonly string _masterVolume = nameof(_masterVolume);
-    private readonly string _musicVolume = nameof(_musicVolume);
-    private readonly string _effectsVolume = nameof(_effectsVolume);
-
     [SerializeField] private AudioMixerGroup _mixer;
 
+    private readonly string _masterVolume = "MasterVolume";
+    private readonly string _musicVolume = "MusicVolume";
+    private readonly string _effectsVolume = "EffectsVolume";
     private bool _isEnabled;
+    private float _volume;
 
     private void Start()
     {
-        PlayerPrefs.SetFloat(_masterVolume, 0);
         _isEnabled = true;
     }
 
@@ -22,7 +21,7 @@ public class SoundsMaster : MonoBehaviour
         _isEnabled = enabled;
 
         if (enabled)
-            ChangeMasterVolume(PlayerPrefs.GetFloat(_masterVolume));
+            ChangeMasterVolume(_volume);
         else
             ChangeVolume(0, _masterVolume);
     }
@@ -32,7 +31,7 @@ public class SoundsMaster : MonoBehaviour
         if (_isEnabled)
             ChangeVolume(volume, _masterVolume);
 
-        PlayerPrefs.SetFloat(_masterVolume, volume);
+        _volume = volume;
     }
 
     public void ChangeSoundsVolume(float volume)
